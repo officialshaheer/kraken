@@ -55,6 +55,15 @@ function init() {
 	meshFloor.receiveShadow = true;
 	scene.add(meshFloor);
 
+	meshTop = new THREE.Mesh(
+		new THREE.PlaneGeometry(20,10,10,10),
+		new THREE.MeshPhongMaterial({color:0xffffff, wireframe:false})
+		);
+	meshTop.rotation.x -= Math.PI;
+	meshTop.receiveShadow = true;
+	meshTop.position.set(0,5,10);
+	scene.add(meshTop);
+
 	ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 	scene.add(ambientLight);
 
@@ -70,20 +79,30 @@ function init() {
 	crateBumpMap = textureLoader.load("textures/map/BUMP.jpg");
 	crateNormalMap = textureLoader.load("textures/map/NORM.jpg");
 
-	crate = new THREE.Mesh(
-		new THREE.BoxGeometry(3,3,3),
-		new THREE.MeshPhongMaterial({
-			color:0xffffff,
-			map:crateTexture,
-			bumpMap:crateBumpMap,
-			normalMap:crateNormalMap
-		}) 
-		);
+	
 
-	scene.add(crate);
-	crate.position.set(2.5,3/2,2.5);
-	crate.receiveShadow = true;
-	crate.castShadow = true;
+	for ( let i = 0; i < 100; i ++ ){
+
+	crate = new THREE.Mesh(
+	new THREE.BoxGeometry(3,3,3),
+	new THREE.MeshPhongMaterial({
+		color:0xffffff,
+		map:crateTexture,
+		bumpMap:crateBumpMap,
+		normalMap:crateNormalMap
+	}) 
+	);
+	crate.position.set(0,i+0.5,0);
+	crate.scale.set(0.2,0.2,0.2);
+	scene.add( crate );
+
+	}
+
+	// scene.add(crate);
+	// crate.position.set(2.5,3/2,2.5);
+	// crate.scale.set(0.2,0.2,0.2);
+	// crate.receiveShadow = true;
+	// crate.castShadow = true;
 
 	var mtlLoader = new THREE.MTLLoader(loadingManager);
 	mtlLoader.load("assets/tes.mtl", function(materials){
@@ -100,7 +119,8 @@ function init() {
 	});
 
 
-	camera.position.set(0,player.height,-5);
+	// camera.position.set(0,player.height,-5);
+	camera.position.set(0,0.8,-5);
 	camera.lookAt(new THREE.Vector3(0,0,0));
 
 	renderer = new THREE.WebGLRenderer();
@@ -179,3 +199,5 @@ window.addEventListener('keydown', keyDown);
 window.addEventListener('keyup', keyUp);
 
 window.onload = init;
+
+
